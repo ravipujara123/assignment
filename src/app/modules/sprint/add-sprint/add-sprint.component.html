@@ -1,0 +1,119 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLongTitle">Create Sprint</h5>
+    <button
+      type="button"
+      class="close"
+      data-dismiss="modal"
+      aria-label="Close"
+      (click)="onClose()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form [formGroup]="sprintForm">
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="">Title</label>
+        <input type="text" class="form-control" placeholder="Titel" formControlName="sprintTitle" />
+        <div
+          *ngIf="
+            sprintForm.get('sprintTitle')?.invalid &&
+            sprintForm.get('sprintTitle')?.touched
+          "
+          class="text-danger"
+        >
+          Sprint title is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="">Start time</label>
+        <input type="date" class="form-control" formControlName="startTime" />
+        <div
+          *ngIf="
+            sprintForm.get('startTime')?.invalid &&
+            sprintForm.get('startTime')?.touched
+          "
+          class="text-danger"
+        >
+          Start time is required
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="">End time</label>
+        <input type="date" class="form-control" formControlName="endTime" />
+        <div
+          *ngIf="
+            sprintForm.get('endTime')?.invalid &&
+            sprintForm.get('endTime')?.touched
+          "
+          class="text-danger"
+        >
+          End time is required
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea
+          class="text-box form-control"
+          placeholder="Description"
+          formControlName="description"
+        ></textarea>
+        <div
+          *ngIf="
+            sprintForm.get('description')?.invalid &&
+            sprintForm.get('description')?.touched
+          "
+          class="text-danger"
+        >
+          Description is required
+        </div>
+      </div>
+      <div class="form-check d-flex">
+        <div class="w-50">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="status"
+            id="option1"
+            value="Active"
+            [attr.disabled]="activeSprintData"
+            formControlName="status"
+          />
+          <label class="form-check-label" for="option1"> Active </label>
+        </div>
+        <div>
+          <input
+            class="form-check-input"
+            type="radio"
+            name="status"
+            id="option1"
+            value="future"
+            formControlName="status"
+          />
+          <label class="form-check-label" for="option1"> Future Sprint </label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="text-center mt-4">
+        <button
+          type="button"
+          class="btn btn-secondary mr-2"
+          (click)="onClose()"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          [disabled]="sprintForm.invalid"
+          (click)="submitForm(sprintForm.value)"
+        >
+          Add Sprint
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

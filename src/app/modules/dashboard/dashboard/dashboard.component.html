@@ -1,0 +1,205 @@
+<div class="row m-0">
+  <div class="col-sm-3 border">
+    <app-left-side-bar></app-left-side-bar>
+  </div>
+  <div class="col-sm-6 border">
+    <div class="container">
+      <div class="row col-md-12 mt-5">
+        <div class="offset-1"></div>
+        <div>
+          <div
+            class="card task-list-container"
+            cdkDropList
+            id="active_sprint"
+            #wip="cdkDropList"
+            [cdkDropListData]="activeSprintList"
+            [cdkDropListConnectedTo]="[
+              'active_sprint',
+              'blockSprint',
+              'futureSprint'
+            ]"
+            (cdkDropListDropped)="drop($event)"
+          >
+            <div class="card-title m-3 task-title-wrapper">Active Sprint ({{activeSprint?.sprintTitle}})</div>
+            <div
+              class="card my-3 mx-3 d-flex todolist-wrapper"
+              *ngFor="let item of activeSprintList; let i=index"
+              cdkDrag
+            >
+              <div id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="card">
+                  <div
+                    class="card-header"
+                    role="tab"
+                    id="headingOne"
+                    (click)="isCollapse = i"
+                  >
+                    <div class="mb-0">
+                      <div
+                        data-toggle="collapse"
+                        data-parent="#accordion"
+                        href=".collapsed"
+                        aria-expanded="false"
+                        aria-controls="collapseOne"
+                        class="collapsed"
+                      >
+                        <h4>
+                          {{ item?.issueTitle
+                          }}<em
+                            class="fa fa-angle-down text-small"
+                            aria-hidden="true"
+                          ></em>
+                        </h4>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    id="collapseOne"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="headingOne"
+                    [ngClass]="isCollapse == i ? 'show' : ''"
+                    aria-expanded="false"
+                  >
+                    <div class="card-block">
+                      <em
+                        [ngClass]="{
+                          'bi bi-pencil-fill icon ': textAreaVisible,
+                          'bi bi-x icon-x ': !textAreaVisible
+                        }"
+                        (click)="toggleTextArea()"
+                      ></em>
+
+                      <ng-template [ngIf]="textAreaVisible">
+                        <span class="m-2">{{ item?.description }}</span>
+                      </ng-template>
+                      <ng-container *ngIf="!textAreaVisible">
+                        <textarea
+                          class="text-box m-2"
+                          name=""
+                          id=""
+                          [(ngModel)]="description"
+                        ></textarea>
+                        <div class="d-flex m-2">
+                          <button
+                            class="btn-primary btn"
+                            (click)="adddescription(i)"
+                          >
+                            Add
+                          </button>
+                          <button
+                            class="btn mx-2 btn-primary"
+                            (click)="textAreaVisible = true"
+                          >
+                            cancel
+                          </button>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="w-100">
+              <button
+              class="btn btn-primary text-box my-2 mx-2"
+              (click)="addIssue(activeSprint.sprintTitle)"
+              >
+              Add Issue
+            </button>
+          </div>
+
+            <ng-container *ngIf="isAddNewModalShown === 'wip'">
+              <div class="card my-3 mr-4 mx-3">
+                <div class="card-body">
+                  <h2>Add Item</h2>
+                  <div>
+                    <input
+                      class="task-input-wrapper"
+                      placeholder="Enter Card Title"
+                      [(ngModel)]="newAddedData"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-secondary my-2 mr-2"
+                    (click)="insertCard('active_sprint')"
+                  >
+                    Insert
+                  </button>
+                  <button class="btn btn-danger" (click)="cancelData()">
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+        <div class="offset-1"></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-3 border">
+    <div class="mt-2">
+      <div
+        class="card task-list-container"
+        cdkDropList
+        id="blockSprint"
+        #iceBox="cdkDropList"
+        [cdkDropListData]="blockSprintList"
+        [cdkDropListConnectedTo]="[
+          'active_sprint',
+          'blockSprint',
+          'futureSprint'
+        ]"
+        (cdkDropListDropped)="drop($event)"
+      >
+        <div class="card-title m-3 task-title-wrapper">Backlog</div>
+        <div
+          class="card my-3 mx-2 px-3 d-flex todolist-wrapper bg-primary text-white py-1"
+          *ngFor="let item of blockSprintList"
+          cdkDrag
+          (click)="selectedSprint = item"
+        >
+          {{ item?.issueTitle }}
+        </div>
+      </div>
+    </div>
+    <div class="mt-2">
+      <div
+        class="card task-list-container"
+        cdkDropList
+        id="futureSprint"
+        #wip="cdkDropList"
+        [cdkDropListData]="futureSprintList"
+        [cdkDropListConnectedTo]="[
+          'active_sprint',
+          'blockSprint',
+          'futureSprint'
+        ]"
+        (cdkDropListDropped)="drop($event)"
+      >
+        <div class="card-title m-3 task-title-wrapper">
+          To Be Implimented In Future
+        </div>
+        <div
+          class="card my-3 mx-2 px-3 d-flex todolist-wrapper bg-success text-white py-1"
+          *ngFor="let item of futureSprintList"
+          cdkDrag
+          (click)="selectedSprint = item"
+        >
+          {{ item?.issueTitle }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="isLoding">
+  <div class="d-flex justify-content-center loding-wrapper">
+    <div class="spinner-border spinner" role="status">
+      <span class="visually-hidden"></span>
+    </div>
+  </div>
+</div>
+  

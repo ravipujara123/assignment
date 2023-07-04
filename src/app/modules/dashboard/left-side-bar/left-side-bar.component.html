@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col-sm-10 m-4">
+    <input
+      class="form-control mr-sm-2"
+      type="search"
+      placeholder="Search"
+      aria-label="Search"
+      (keydown.enter)="SearchDetail($event)"
+    />
+  </div>
+</div>
+
+<div *ngFor="let sprint of sprintData; let i = index" class="m-2">
+  <ng-container *ngIf="sprintDataShown.includes(sprint.sprintTitle) && sprint.status != 'Active'">
+    <button *ngIf="!!sprint.sprintTitle"
+      class="btn btn-secondary w-100 mt-2 mb-1"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#collapseExample"
+      aria-expanded="false"
+      aria-controls="collapseExample"
+      (click)="getIssueDetail(i)"
+    >
+      {{ sprint.sprintTitle }}
+    </button>
+    <div
+      class="collapse"
+      [ngClass]="collapseIndex == i && sprint.isCollapse ? 'show' : ''"
+    >
+      <div class="card card-body">
+        <button
+          type="button"
+          class="btn btn-primary w-100 mb-2"
+          (click)="addIssue(sprint.sprintTitle)"
+          data-toggle="modal"
+          data-target="#exampleModalLong"
+        >
+          Add New Issue
+        </button>
+        <div
+          class="d-flex justify-content-between"
+          *ngFor="let issue of issueData"
+        >
+          <ng-container *ngIf="sprint.sprintTitle == issue.sprintName">
+            <span>{{ issue.issueTitle }}</span>
+            <span>{{ issue.issueId }}</span>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

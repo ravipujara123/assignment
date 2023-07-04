@@ -1,0 +1,52 @@
+<header
+  class="navbar navbar-expand navbar-dark bg-primary"
+  *ngIf="isHeaderShown"
+>
+  <div class="container-fluid">
+    <a class="navbar-brand"
+      ><img src="/assets/user-placeholder.png" alt="Logo" height="30"
+    /></a>
+
+    <div class="d-flex mx-auto search_container">
+      <input
+        class="form-control mr-sm-2"
+        type="search"
+        placeholder="Search"
+        aria-label="Search"
+        (keydown.enter)="SearchDetail($event)"
+      />
+    </div>
+
+    <div class="dropdown">
+      <button
+        class="btn btn-outline-light dropdown-toggle"
+        type="button"
+        data-toggle="dropdown"
+      >
+        Add
+      </button>
+      <div class="dropdown-menu p-2">
+        <button
+          (click)="addSprint(sprint)"
+          type="button"
+          class="btn btn-primary mb-2 w-100"
+        >
+          Create New Sprint
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary w-100"
+          (click)="addIssue(issue)"
+          data-toggle="modal"
+          data-target="#exampleModalLong"
+        >
+          Create New Issue
+        </button>
+      </div>
+    </div>
+
+    <button class="btn btn-outline-light ml-2" type="button" (click)="logOut()">
+      Logout
+    </button>
+  </div>
+</header>

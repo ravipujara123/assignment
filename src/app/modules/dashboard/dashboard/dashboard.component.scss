@@ -1,0 +1,23 @@
+.icon {
+  margin-left: 95%;
+}
+.icon-x {
+  margin-left: 95%;
+}
+.text-box {
+  width: 96%;
+}
+
+.loding-wrapper{
+    background: #646363b8;
+    z-index: 10000 !important;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px; 
+}
+
+.spinner {
+    position: sticky;
+    top: 50%;
+}
